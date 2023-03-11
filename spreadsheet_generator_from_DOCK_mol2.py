@@ -60,8 +60,8 @@ def mol2_mol_supplier_loop(file):
                                         cleanupSubstructures=False)
                 mols.append(m)
                 continue
-            elif ("SMILES") in line:
-                smi = line.split()[2]
+            elif ("RD_SMILES") in line:
+                smi = line.split(":")[1]
                 smiles.append(smi)                
                 
             if recording==True:

@@ -49,9 +49,14 @@ def create_dataframe_from_mol2(filename, descriptor_list):
         tmp = []
         for line in lines:
             if entry in line:
-                broken_line = line.split()
-                # Append the data of interest
-                tmp.append(broken_line[2])
+                if entry == 'RD_SMILES':
+                    broken_line = line.split(':')
+                    # Append the data of interest
+                    tmp.append(broken_line[1].strip('\n'))
+                else:
+                    broken_line = line.split()
+                    # Append the data of interest
+                    tmp.append(broken_line[2])
             else: continue
         df[entry] = tmp
     col_length = len(df[descriptor_list[0]])
@@ -82,17 +87,22 @@ mol2file = sys.argv[1]
 
 # Important variables
 end_pattern = '0 ROOT'
-descriptors = ["Name_DOCK","From_List","List_Rank","Name_MOE","Cluster_size",
-               "TotalScore_(FPS+DCE)","Continuous_Score","Continuous_vdw_energy",
-               "Internal_energy_repulsive","Footprint_Similarity_Score",
-               "FPS_vdw_fps","FPS_es_fps","FPS_hb_fps","FPS_vdw_fp_numres",
-               "FPS_es_fp_numres","FPS_hb_fp_numres","Num_H-bonds","DOCK_rot_bonds",
-               "Pharmacophore_Score","Property_Volume_Score","Tanimoto_Score",
-               "Hungarian_Matching_Similarity_Score","Descriptor_Score",
-               "MOE_rot_bonds","Molecular_weight","Num_chiral_centers",
-               "Lipinski_donors","Lipinski_acceptors","Lipinski_druglike",
-               "Lipinski_violations","SlogP","Formal_charge","logS",
-               "Ligand_efficiency","SMILES"]
+descriptors = [ "Name", "Molecular_Weight", "DOCK_Rotatable_Bonds", "Formal_Charge",
+                "HBond_Acceptors", "HBond_Donors", "RD_Stereocenters", "RD_LogP", 
+                "RD_SYNTHA", "RD_QED", "RD_num_of_PAINS", "RD_PAINS_names", "RD_SMILES", 
+                "Continuous_Score", "desc_Continuous_es_energy", "desc_FPS_vdw_energy", 
+                "desc_FPS_es_energy", "desc_FPS_num_hbond" ]
+#descriptors = ["Name_DOCK","From_List","List_Rank","Name_MOE","Cluster_size",
+#               "TotalScore_(FPS+DCE)","Continuous_Score","Continuous_vdw_energy",
+#               "Internal_energy_repulsive","Footprint_Similarity_Score",
+#               "FPS_vdw_fps","FPS_es_fps","FPS_hb_fps","FPS_vdw_fp_numres",
+#               "FPS_es_fp_numres","FPS_hb_fp_numres","Num_H-bonds","DOCK_rot_bonds",
+#               "Pharmacophore_Score","Property_Volume_Score","Tanimoto_Score",
+#               "Hungarian_Matching_Similarity_Score","Descriptor_Score",
+#               "MOE_rot_bonds","Molecular_weight","Num_chiral_centers",
+#               "Lipinski_donors","Lipinski_acceptors","Lipinski_druglike",
+#               "Lipinski_violations","SlogP","Formal_charge","logS",
+#               "Ligand_efficiency","SMILES"]
 
 # Create dataframe from mol2 file
 data = create_dataframe_from_mol2( mol2file, descriptors )
@@ -101,14 +111,14 @@ data = create_dataframe_from_mol2( mol2file, descriptors )
 csvname = mol2file[:-5] # remove ".mol2" from the end
 data.to_csv(f"{csvname}.csv", index=False)
 
-# Separate ZINC IDs to facilitate the retrieval of specific molecules from
-# the mol2 file. Write to file.
-zinc_ids = deepcopy( data["Name_DOCK"] )
-begin, end = discover_ends( mol2file, end_pattern )
-if (len(zinc_ids) == len(begin)) and (len(zinc_ids) == len(end)):
-    with open(f"positions_{csvname}.dat", "w+") as f:
-        f.write("Name\tbegin_idx\tend_idx\n")
-        for i in range(len(zinc_ids)):
-            f.write(f"{zinc_ids[i]}\t{begin[i]:6}\t{end[i]:6}\n")
-else:
-    print("There is something wrong in the mol2 file")
+## Separate ZINC IDs to facilitate the retrieval of specific molecules from
+## the mol2 file. Write to file.
+#zinc_ids = deepcopy( data["Name_DOCK"] )
+#begin, end = discover_ends( mol2file, end_pattern )
+#if (len(zinc_ids) == len(begin)) and (len(zinc_ids) == len(end)):
+#    with open(f"positions_{csvname}.dat", "w+") as f:
+#        f.write("Name\tbegin_idx\tend_idx\n")
+#        for i in range(len(zinc_ids)):
+#            f.write(f"{zinc_ids[i]}\t{begin[i]:6}\t{end[i]:6}\n")
+#else:
+#    print("There is something wrong in the mol2 file")
