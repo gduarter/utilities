@@ -12,6 +12,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--itpfile", help="GROMACS itp file",
                         type=str, nargs=1, required=True)
+    #parser.add_argument("--c_alpha", action="store_true", required=False)
     args = parser.parse_args()
     if len(args.itpfile) != 1:
         print(f"Usage: python {sys.argv[0]} -i itpfile.itp")
@@ -36,7 +37,8 @@ if __name__ == '__main__':
     tmp = table[0]
 
     # Renumber list by subtracting (tmp[0]-1) of all tmp elements
-    tmp = tmp - tmp[0] + 1
+    tmp = tmp - tmp[0] + 1 # 5 if constraining alpha carbons, 1 if backbone or protein-H (gromacs files only)
+    ###if -ca flag is TRUE, then tmp = tmp - tmp[0] + 5
 
     # Create table with updated atom numbers
     new_table = np.array([tmp, table[1], table[2], table[3], table[4]])

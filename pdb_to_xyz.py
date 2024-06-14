@@ -27,6 +27,15 @@ class PDBtoXYZ:
             psi4Block += f'''{atom.GetSymbol():2s}  {pos.x:10.6f} {pos.y:10.6f} {pos.z:10.6f}\n'''
         return psi4Block
 
+    def createForOrca(self):
+        rdmol = Chem.MolFromPDBFile(self.pdbFile,
+                                    removeHs=False)
+        orcaBlock = f'''*xyz {self.charge} {self.spinMult}\n'''
+        for idx, atom in enumerate(rdmol.GetAtoms()):
+            pos = rdmol.GetConformer().GetAtomPosition(idx)
+            orcaBlock += f'''{atom.GetSymbol():2s}  {pos.x:10.6f} {pos.y:10.6f} {pos.z:10.6f}\n'''
+        orcaBlock += f'''*\n'''
+        return orcaBlock
 
 
 if __name__ == '__main__':
@@ -63,8 +72,10 @@ if __name__ == '__main__':
     molText = PDBtoXYZ(filename, multiplicity, charge)
     f1 = molText.createXYZ()
     f2 = molText.createForPsi4()
+    f3 = molText.createForOrca()
     print(f1, file = open(f'{newName}.xyz','w+'))
     print(f2, file = open(f'{newName}.psi4.xyz','w+'))
+    print(f3, file = open(f'{newName}.orca.inp','w+'))
 
     print("PDB turned to XYZ done!")
 

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 ###### Help Function ########
 helpFunction(){
     echo -e "\tUsage: $0 -p pdb_code -o dock6_outfile -f fp_out_txt"
