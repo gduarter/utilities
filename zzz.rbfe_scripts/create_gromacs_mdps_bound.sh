@@ -176,57 +176,7 @@ DispCorr                = AllEnerPres
 gen_vel                 = no        ; usar velocidades geradas da etapa NPT
 EOF
 
-cat << EOF > 05.equil_npt2.X.mdp
-define                  = -DBACKBONE -DPOSRES_LIG
-; Run parameters
-integrator              = sd          ; Integrador de Langevin
-nsteps                  = 50000       ; 100 ps
-dt                      = 0.002       ; 2 fs
-; Output control
-nstenergy               = 0
-nstlog                  = 0
-nstxout-compressed      = 0
-; Bond parameters
-continuation            = yes       ; continuação do NPT2
-constraint_algorithm    = lincs
-constraints             = hbonds
-lincs_iter              = 1
-lincs_order             = 4
-; Neighbor searching and vdW
-cutoff-scheme           = Verlet
-ns_type                 = grid
-nstlist                 = 20
-rlist                   = 1.2
-vdwtype                 = cutoff
-vdw-modifier            = force-switch
-rvdw-switch             = 1.0
-rvdw                    = 1.2
-; Electrostatics
-coulombtype             = PME
-rcoulomb                = 1.2
-pme_order               = 4
-fourierspacing          = 0.16
-; Temperature coupling
-tcoupl                  = no
-tc-grps                 = System
-tau_t                   = 2.0
-ref_t                   = 298.15
-; Pressure coupling
-pcoupl                  = Parrinello-Rahman    ; algoritmo do barostato para NPT
-pcoupltype              = isotropic            ; caixa de simulacao varia uniformemente
-tau_p                   = 5.0                  ; constante de tempo
-ref_p                   = 1.0                  ; pressao de referencia em bar
-compressibility         = 4.5e-5               ; compressibilidade isotermica da agua, bar^-1
-refcoord_scaling        = com                  ; permite o uso de restricoes de posicao com o barostato
-; Periodic boundary conditions
-pbc                     = xyz       ; 3-D PBC
-; Dispersion correction is not used for proteins with the C36 additive FF
-DispCorr                = AllEnerPres
-; Velocity generation
-gen_vel                 = no        ; usar velocidades geradas da etapa NPT
-EOF
-
-cat << EOF > 06.prod.X.mdp
+cat << EOF > 05.prod.X.mdp
 ; Run parameters
 integrator              = sd          ; Integrador de Langevin
 nsteps                  = 5000000     ; 10 ns

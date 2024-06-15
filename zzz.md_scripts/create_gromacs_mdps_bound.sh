@@ -3,7 +3,7 @@
 # Author: Guilherme Duarte R. Matos
 # Date: September 26, 2022
 
-cat << EOF > 01.minimization.X.mdp
+cat << EOF > 01.minimization.mdp
 ; Parameters describing what to do, when to stop and what to save
 integrator      = steep     ; Algorithm (steep = steepest descent minimization)
 emtol           = 1000.0    ; Stop minimization when the maximum force < 10.0 kJ/mol
@@ -25,7 +25,9 @@ pbc             = xyz           ; Periodic Boundary Conditions
 DispCorr        = AllEnerPres
 EOF
 
-cat << EOF > 02.equil_nvt.X.mdp
+cat << EOF > 02.equil_nvt.mdp
+title                   = Protein-ligand complex NVT equilibration 
+define                  = -DPOSRES -DPOSRES_LIG ; position restrain the protein and ligand
 ; Run parameters
 integrator              = sd        ; Langevin integrator
 nsteps                  = 50000     ; 2 * 50000 = 100 ps
@@ -72,7 +74,9 @@ gen_seed                = -1        ; generate a random seed
 ld_seed                 = -1
 EOF
 
-cat << EOF > 03.equil_npt.X.mdp
+cat << EOF > 03.equil_npt.mdp
+title                   = Protein-ligand complex NPT equilibration 
+define                  = -DPOSRES -DPOSRES_LIG 
 ; Run parameters
 integrator              = sd        ; Integrador de Langevin
 nsteps                  = 50000     ; 2 * 50000 = 100 ps
@@ -122,7 +126,8 @@ gen_vel                 = no        ; usar velocidades geradas da etapa NVT
 ld_seed                 = -1
 EOF
 
-cat << EOF > 04.equil_npt2.X.mdp
+cat << EOF > 04.equil_npt2.mdp
+define                  = -DPOSRES -DPOSRES_LIG
 ; Run parameters
 integrator              = sd        ; Integrador de Langevin
 nsteps                  = 50000     ; 2 * 50000 = 100 ps
@@ -171,7 +176,7 @@ DispCorr                = AllEnerPres
 gen_vel                 = no        ; usar velocidades geradas da etapa NPT
 EOF
 
-cat << EOF > 05.prod.X.mdp
+cat << EOF > 05.prod.mdp
 ; Run parameters
 integrator              = sd          ; Integrador de Langevin
 nsteps                  = 5000000     ; 10 ns
