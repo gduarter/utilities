@@ -11,7 +11,7 @@ if __name__ ==  '__main__':
     node.addInput("Ligand FF", BSS.Gateway.String( help="Force field to parameterise ligands with.", allowed=["GAFF1", "GAFF2"],default="GAFF2",),)
     node.addInput("Protein FF", BSS.Gateway.String(help="Force field to parameterise the protein with.", allowed=["FF03", "FF14SB", "FF99", "FF99SB", "FF99SBILDN"], default="FF14SB",),)
     node.addInput("Water Model", BSS.Gateway.String(help="Water model to use.", allowed=["SPC", "SPCE", "TIP3P", "TIP4P", "TIP5P"], default="TIP3P",),)
-    node.addInput("Box Edges", BSS.Gateway.String(help="Size of water box around molecular system.", allowed=["20*angstrom","25*angstrom","30*angstrom","35*angstrom","45*angstrom","5*nm","7*nm","10*nm",],default="45*angstrom",),)
+    node.addInput("Box Edges", BSS.Gateway.String(help="Size of water box around molecular system.", allowed=["20*angstrom","25*angstrom","30*angstrom","35*angstrom","45*angstrom","5*nm","7*nm","10*nm",],default="25*angstrom",),)
     node.addInput("Box Shape", BSS.Gateway.String(help="Geometric shape of water box.", allowed=["cubic", "truncatedOctahedron"], default="cubic",),)
     node.addInput("Run Time", BSS.Gateway.String(help="The sampling time per lambda window.", allowed=["10*ps","100*ps","1*ns","2*ns","3*ns","4*ns","5*ns","8*ns","10*ns","12*ns","15*ns",],default="10*ns",),)
 

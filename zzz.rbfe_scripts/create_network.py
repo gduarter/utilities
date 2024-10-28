@@ -49,6 +49,9 @@ if __name__ ==  '__main__':
     ligands_path = args.ligands[0]
     network_path = args.network[0]
 
+    if not os.path.exists(f"{network_path}"):
+        os.makedirs(f"{network_path}")
+
     # create protocol.
     protocol = [
         f"ligand forcefield = {node.getInput('Ligand FF')}",

@@ -195,5 +195,5 @@ if __name__ ==  '__main__':
                 work_dir=workdir + "/free/",
             )
 
-    with open(f"{rbfe}/rbfe_checkpoint.out", "w+") as f:
+    with open(f"{rbfe_path}/rbfe_checkpoint.out", "w+") as f:
         f.write(f"RBFE files are ready and can be found at {rbfe_path}") 

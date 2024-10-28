@@ -75,7 +75,7 @@ if __name__ == '__main__':
     f3 = molText.createForOrca()
     print(f1, file = open(f'{newName}.xyz','w+'))
     print(f2, file = open(f'{newName}.psi4.xyz','w+'))
-    print(f3, file = open(f'{newName}.orca.inp','w+'))
+    print(f3, file = open(f'{newName}.inp','w+'))
 
     print("PDB turned to XYZ done!")
 
